@@ -29,51 +29,67 @@ const db = getFirestore(app);
 const MATCHES = [
   {
     id: "match-1",
-    teamA: "Mumbai Indians",
-    teamB: "Chennai Super Kings",
-    date: "05 Apr 2026",
-    time: "7:30 PM IST",
-    venue: "Wankhede Stadium"
+    teamA: "Delhi Capitals",
+    teamB: "Mumbai Indians",
+    date: "04 Apr 2026",
+    time: "3:30 PM IST",
+    venue: "Delhi"
   },
   {
     id: "match-2",
-    teamA: "Royal Challengers Bengaluru",
-    teamB: "Kolkata Knight Riders",
-    date: "06 Apr 2026",
+    teamA: "Gujarat Titans",
+    teamB: "Rajasthan Royals",
+    date: "04 Apr 2026",
     time: "7:30 PM IST",
-    venue: "M. Chinnaswamy Stadium"
+    venue: "Ahmedabad"
   },
   {
     id: "match-3",
-    teamA: "Rajasthan Royals",
-    teamB: "Sunrisers Hyderabad",
-    date: "07 Apr 2026",
+    teamA: "Sunrisers Hyderabad",
+    teamB: "Lucknow Super Giants",
+    date: "05 Apr 2026",
     time: "3:30 PM IST",
-    venue: "Sawai Mansingh Stadium"
+    venue: "Hyderabad"
   },
   {
     id: "match-4",
-    teamA: "Delhi Capitals",
-    teamB: "Punjab Kings",
-    date: "08 Apr 2026",
+    teamA: "Royal Challengers Bengaluru",
+    teamB: "Chennai Super Kings",
+    date: "05 Apr 2026",
     time: "7:30 PM IST",
-    venue: "Arun Jaitley Stadium"
+    venue: "Bengaluru"
   },
   {
     id: "match-5",
-    teamA: "Gujarat Titans",
-    teamB: "Lucknow Super Giants",
-    date: "09 Apr 2026",
+    teamA: "Kolkata Knight Riders",
+    teamB: "Punjab Kings",
+    date: "06 Apr 2026",
     time: "7:30 PM IST",
-    venue: "Narendra Modi Stadium"
+    venue: "Kolkata"
   },
   {
     id: "match-6",
-    teamA: "Chennai Super Kings",
-    teamB: "Rajasthan Royals",
-    date: "10 Apr 2026",
+    teamA: "Rajasthan Royals",
+    teamB: "Mumbai Indians",
+    date: "07 Apr 2026",
     time: "7:30 PM IST",
-    venue: "M. A. Chidambaram Stadium"
+    venue: "Jaipur"
+  },
+  {
+    id: "match-7",
+    teamA: "Delhi Capitals",
+    teamB: "Gujarat Titans",
+    date: "08 Apr 2026",
+    time: "7:30 PM IST",
+    venue: "Delhi"
+  },
+  {
+    id: "match-8",
+    teamA: "Kolkata Knight Riders",
+    teamB: "Lucknow Super Giants",
+    date: "09 Apr 2026",
+    time: "7:30 PM IST",
+    venue: "Kolkata"
   }
 ];
 
