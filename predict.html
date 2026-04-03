@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IPL Oracle | Predict</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="predict">
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">IP</span>
+        <div>
+          <p class="brand-name">IPL Oracle</p>
+          <span class="brand-tag">Prediction Arena</span>
+        </div>
+      </a>
+
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#leaderboard">Leaderboard</a>
+      </nav>
+
+      <div class="coin-badge" id="coinDisplay">Coins 120</div>
+    </header>
+
+    <main class="predict-layout">
+      <section class="predict-header">
+        <p class="eyebrow">Prediction board</p>
+        <h1>Choose your winner</h1>
+        <p id="matchMeta" class="hero-text"></p>
+      </section>
+
+      <section class="prediction-card">
+        <div id="selectedMatchCard" class="selected-match"></div>
+
+        <div id="teamOptions" class="team-options" aria-label="Team selection"></div>
+
+        <button id="submitPrediction" class="primary-button">Submit Prediction</button>
+        <p id="predictionMessage" class="form-message" aria-live="polite"></p>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="script.js"></script>
+</body>
+</html>

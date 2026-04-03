@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IPL Oracle | Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="login">
+  <div class="auth-layout">
+    <a class="brand auth-brand" href="index.html">
+      <span class="brand-mark">IP</span>
+      <div>
+        <p class="brand-name">IPL Oracle</p>
+        <span class="brand-tag">Prediction Arena</span>
+      </div>
+    </a>
+
+    <main class="auth-card">
+      <p class="eyebrow">Welcome back</p>
+      <h1>Log in to place your prediction</h1>
+      <p class="auth-copy">Use any valid email and a password with at least 4 characters to continue.</p>
+
+      <form id="loginForm" class="auth-form" novalidate>
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" placeholder="you@example.com" required>
+
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" placeholder="Enter password" required>
+
+        <button type="submit" class="primary-button">Login</button>
+        <p id="loginMessage" class="form-message" aria-live="polite"></p>
+      </form>
+    </main>
+  </div>
+
+  <script type="module" src="script.js"></script>
+</body>
+</html>

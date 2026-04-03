@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IPL Oracle | Home</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="home">
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">IP</span>
+        <div>
+          <p class="brand-name">IPL Oracle</p>
+          <span class="brand-tag">Prediction Arena</span>
+        </div>
+      </a>
+
+      <nav class="nav-links">
+        <a href="index.html" class="active">Home</a>
+        <a href="#leaderboard">Leaderboard</a>
+      </nav>
+
+      <div class="coin-badge" id="coinDisplay">Coins 120</div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Fantasy-style predictions</p>
+          <h1>Pick winners, stack points, and climb the IPL leaderboard.</h1>
+          <p class="hero-text">
+            Choose an upcoming match, lock your prediction, and keep your streak alive through every fixture.
+          </p>
+        </div>
+
+        <div class="hero-panel">
+          <p class="panel-label">Today&apos;s challenge</p>
+          <h2>Predict before the toss closes.</h2>
+          <p>Each successful prediction helps you earn more coins and move closer to the top.</p>
+        </div>
+      </section>
+
+      <section class="section-head">
+        <div>
+          <p class="eyebrow">Upcoming fixtures</p>
+          <h2>Available IPL matches</h2>
+        </div>
+        <p class="section-note">Tap a card to start your prediction.</p>
+      </section>
+
+      <section id="matchesContainer" class="matches-grid" aria-live="polite"></section>
+
+      <section id="leaderboard" class="leaderboard-card">
+        <div>
+          <p class="eyebrow">Leaderboard preview</p>
+          <h2>Top predictors</h2>
+        </div>
+        <div class="leaderboard-list">
+          <div class="leaderboard-item">
+            <span>1. Riya S.</span>
+            <strong>980 pts</strong>
+          </div>
+          <div class="leaderboard-item">
+            <span>2. Aarav K.</span>
+            <strong>920 pts</strong>
+          </div>
+          <div class="leaderboard-item">
+            <span>3. You</span>
+            <strong>120 pts</strong>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="script.js"></script>
+</body>
+</html>
