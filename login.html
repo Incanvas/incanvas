@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IPL Oracle | Login</title>
+  <title>IPL Oracle | Login or Sign Up</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body data-page="login">
@@ -17,18 +17,18 @@
     </a>
 
     <main class="auth-card">
-      <p class="eyebrow">Welcome back</p>
-      <h1>Log in to place your prediction</h1>
-      <p class="auth-copy">Use any valid email and a password with at least 4 characters to continue.</p>
+      <p class="eyebrow">Welcome to IPL Oracle</p>
+      <h1>Log in or create your account</h1>
+      <p class="auth-copy">Enter your email and a password with at least 6 characters. If your account does not exist yet, we will create it automatically.</p>
 
       <form id="loginForm" class="auth-form" novalidate>
         <label for="email">Email</label>
-        <input id="email" name="email" type="email" placeholder="you@example.com" required>
+        <input id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required>
 
         <label for="password">Password</label>
-        <input id="password" name="password" type="password" placeholder="Enter password" required>
+        <input id="password" name="password" type="password" placeholder="Enter password" autocomplete="current-password" required>
 
-        <button type="submit" class="primary-button">Login</button>
+        <button type="submit" class="primary-button">Continue</button>
         <p id="loginMessage" class="form-message" aria-live="polite"></p>
       </form>
     </main>
