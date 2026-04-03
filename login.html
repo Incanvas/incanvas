@@ -19,7 +19,7 @@
     <main class="auth-card">
       <p class="eyebrow">Welcome to IPL Oracle</p>
       <h1>Log in or create your account</h1>
-      <p class="auth-copy">Enter your email and a password with at least 6 characters. If your account does not exist yet, we will create it automatically.</p>
+      <p class="auth-copy">Enter your email and a password with at least 6 characters, then choose whether to log in or register.</p>
 
       <form id="loginForm" class="auth-form" novalidate>
         <label for="email">Email</label>
@@ -28,7 +28,10 @@
         <label for="password">Password</label>
         <input id="password" name="password" type="password" placeholder="Enter password" autocomplete="current-password" required>
 
-        <button type="submit" class="primary-button">Continue</button>
+        <div class="auth-actions">
+          <button type="button" id="loginButton" class="primary-button">Login</button>
+          <button type="button" id="registerButton" class="secondary-button">Register</button>
+        </div>
         <p id="loginMessage" class="form-message" aria-live="polite"></p>
       </form>
     </main>
