@@ -1,5 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
 import {
+  createUserWithEmailAndPassword,
   getAuth,
   onAuthStateChanged,
   signInWithEmailAndPassword
@@ -219,14 +220,41 @@ function getFriendlyAuthError(error) {
   switch (error.code) {
     case "auth/invalid-credential":
     case "auth/wrong-password":
+      return "Wrong password. Please try again.";
     case "auth/user-not-found":
-      return "Invalid email or password.";
+      return "No account found for this email.";
     case "auth/invalid-email":
       return "Please enter a valid email address.";
+    case "auth/email-already-in-use":
+      return "This email is already registered. Try logging in again.";
+    case "auth/weak-password":
+      return "Password is too weak. Please use at least 6 characters.";
     case "auth/too-many-requests":
       return "Too many attempts. Please try again in a bit.";
     default:
       return "Login failed. Please try again.";
+  }
+}
+
+// Attempts a normal sign-in first, then falls back to automatic signup
+// when Firebase reports that the user does not exist yet.
+async function loginOrSignup(email, password) {
+  try {
+    const credential = await signInWithEmailAndPassword(auth, email, password);
+    return {
+      user: credential.user,
+      mode: "login"
+    };
+  } catch (error) {
+    if (error.code !== "auth/user-not-found") {
+      throw error;
+    }
+
+    const credential = await createUserWithEmailAndPassword(auth, email, password);
+    return {
+      user: credential.user,
+      mode: "signup"
+    };
   }
 }
 
@@ -250,8 +278,9 @@ async function handleLogin() {
       return;
     }
 
-    if (password.length < 4) {
-      messageNode.textContent = "Password must be at least 4 characters.";
+    // Firebase email/password signup requires at least 6 characters.
+    if (password.length < 6) {
+      messageNode.textContent = "Password must be at least 6 characters.";
       messageNode.className = "form-message error";
       return;
     }
@@ -260,10 +289,12 @@ async function handleLogin() {
     messageNode.className = "form-message";
 
     try {
-      const credential = await signInWithEmailAndPassword(auth, email, password);
-      currentUser = credential.user;
+      const { user, mode } = await loginOrSignup(email, password);
+      currentUser = user;
       await ensureUserDocument(currentUser);
-      messageNode.textContent = "Login successful. Redirecting to your match...";
+      messageNode.textContent = mode === "signup"
+        ? "Account created successfully 🎉"
+        : "Login successful";
       messageNode.className = "form-message success";
       await updateCoinDisplay();
 
