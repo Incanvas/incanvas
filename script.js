@@ -225,7 +225,7 @@ function getFriendlyAuthError(error) {
     case "auth/invalid-email":
       return "Please enter a valid email address.";
     case "auth/email-already-in-use":
-      return "User already exists";
+  return "Account already exists. Please login instead.";
     case "auth/weak-password":
       return "Password is too weak. Please use at least 6 characters.";
     case "auth/too-many-requests":
@@ -284,10 +284,12 @@ async function loginUser(email, password, messageNode) {
 // Handles the registration action and seeds the Firestore profile document.
 async function registerUser(email, password, messageNode) {
   messageNode.textContent = "Creating account...";
-  messageNode.className = "form-message";
 
   const credential = await createUserWithEmailAndPassword(auth, email, password);
-  await createUserProfile(credential.user);
+
+  // REMOVE this:
+  // await createUserProfile(credential.user);
+
   await completeAuthSuccess(credential.user, messageNode, "Account created successfully");
 }
 
@@ -503,11 +505,15 @@ function init() {
     }
 
     // If a user is already logged in, the login page should move them forward.
-    if (currentUser && page === "login") {
-      await ensureUserDocument(currentUser);
-      redirectAfterLogin();
-      return;
-    }
+if (currentUser && page === "login") {
+  // Only redirect if coming from prediction flow
+  const redirectPage = localStorage.getItem(STORAGE_KEYS.redirectPage);
+
+  if (redirectPage) {
+    redirectAfterLogin();
+  }
+  return;
+}
 
     await initPage(page);
   });
