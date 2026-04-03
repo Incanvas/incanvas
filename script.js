@@ -220,13 +220,12 @@ function getFriendlyAuthError(error) {
   switch (error.code) {
     case "auth/invalid-credential":
     case "auth/wrong-password":
-      return "Wrong password. Please try again.";
     case "auth/user-not-found":
-      return "No account found for this email.";
+      return "Invalid credentials";
     case "auth/invalid-email":
       return "Please enter a valid email address.";
     case "auth/email-already-in-use":
-      return "This email is already registered. Try logging in again.";
+      return "User already exists";
     case "auth/weak-password":
       return "Password is too weak. Please use at least 6 characters.";
     case "auth/too-many-requests":
@@ -236,73 +235,108 @@ function getFriendlyAuthError(error) {
   }
 }
 
-// Attempts a normal sign-in first, then falls back to automatic signup
-// when Firebase reports that the user does not exist yet.
-async function loginOrSignup(email, password) {
-  try {
-    const credential = await signInWithEmailAndPassword(auth, email, password);
-    return {
-      user: credential.user,
-      mode: "login"
-    };
-  } catch (error) {
-    if (error.code !== "auth/user-not-found") {
-      throw error;
-    }
-
-    const credential = await createUserWithEmailAndPassword(auth, email, password);
-    return {
-      user: credential.user,
-      mode: "signup"
-    };
+function validateAuthForm(email, password, messageNode) {
+  if (!validateEmail(email)) {
+    messageNode.textContent = "Please enter a valid email address.";
+    messageNode.className = "form-message error";
+    return false;
   }
+
+  // Firebase email/password auth requires at least 6 characters.
+  if (password.length < 6) {
+    messageNode.textContent = "Password must be at least 6 characters.";
+    messageNode.className = "form-message error";
+    return false;
+  }
+
+  return true;
+}
+
+async function completeAuthSuccess(user, messageNode, successMessage) {
+  currentUser = user;
+  await ensureUserDocument(currentUser);
+  await updateCoinDisplay();
+  messageNode.textContent = successMessage;
+  messageNode.className = "form-message success";
+
+  setTimeout(() => {
+    redirectAfterLogin();
+  }, 700);
+}
+
+// Creates the Firestore user profile immediately after registration.
+async function createUserProfile(user) {
+  await setDoc(getUserDocRef(user.uid), {
+    email: user.email,
+    coins: 0
+  });
+}
+
+// Handles the login action for existing users.
+async function loginUser(email, password, messageNode) {
+  messageNode.textContent = "Logging in...";
+  messageNode.className = "form-message";
+
+  const credential = await signInWithEmailAndPassword(auth, email, password);
+  await completeAuthSuccess(credential.user, messageNode, "Login successful");
+}
+
+// Handles the registration action and seeds the Firestore profile document.
+async function registerUser(email, password, messageNode) {
+  messageNode.textContent = "Creating account...";
+  messageNode.className = "form-message";
+
+  const credential = await createUserWithEmailAndPassword(auth, email, password);
+  await createUserProfile(credential.user);
+  await completeAuthSuccess(credential.user, messageNode, "Account created successfully");
 }
 
 async function handleLogin() {
   const loginForm = document.getElementById("loginForm");
+  const loginButton = document.getElementById("loginButton");
+  const registerButton = document.getElementById("registerButton");
   const messageNode = document.getElementById("loginMessage");
 
-  if (!loginForm || !messageNode) {
+  if (!loginForm || !loginButton || !registerButton || !messageNode) {
     return;
   }
 
-  loginForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
-
+  const getFormValues = () => {
     const email = loginForm.email.value.trim();
     const password = loginForm.password.value.trim();
+    return { email, password };
+  };
 
-    if (!validateEmail(email)) {
-      messageNode.textContent = "Please enter a valid email address.";
-      messageNode.className = "form-message error";
+  loginForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    loginButton.click();
+  });
+
+  loginButton.addEventListener("click", async () => {
+    const { email, password } = getFormValues();
+    if (!validateAuthForm(email, password, messageNode)) {
       return;
     }
-
-    // Firebase email/password signup requires at least 6 characters.
-    if (password.length < 6) {
-      messageNode.textContent = "Password must be at least 6 characters.";
-      messageNode.className = "form-message error";
-      return;
-    }
-
-    messageNode.textContent = "Signing in...";
-    messageNode.className = "form-message";
 
     try {
-      const { user, mode } = await loginOrSignup(email, password);
-      currentUser = user;
-      await ensureUserDocument(currentUser);
-      messageNode.textContent = mode === "signup"
-        ? "Account created successfully 🎉"
-        : "Login successful";
-      messageNode.className = "form-message success";
-      await updateCoinDisplay();
-
-      setTimeout(() => {
-        redirectAfterLogin();
-      }, 700);
+      await loginUser(email, password, messageNode);
     } catch (error) {
       console.error("Login error:", error);
+      messageNode.textContent = getFriendlyAuthError(error);
+      messageNode.className = "form-message error";
+    }
+  });
+
+  registerButton.addEventListener("click", async () => {
+    const { email, password } = getFormValues();
+    if (!validateAuthForm(email, password, messageNode)) {
+      return;
+    }
+
+    try {
+      await registerUser(email, password, messageNode);
+    } catch (error) {
+      console.error("Registration error:", error);
       messageNode.textContent = getFriendlyAuthError(error);
       messageNode.className = "form-message error";
     }
@@ -440,7 +474,9 @@ async function renderPredictionPage() {
 }
 
 async function initPage(page) {
-  renderMatches();
+  if (page === "home") {
+    renderMatches();
+  }
 
   if (page === "login") {
     await handleLogin();
